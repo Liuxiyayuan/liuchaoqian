@@ -11,9 +11,12 @@ def 有序类别变量描述统计表(文件路径, 变量):
 __all__ = ['有序类别变量描述统计表']
 
 
-
+import pandas as pd
+import matplotlib.pyplot as plt
+plt.rcParams['font.sans-serif']=['SimHei']
 def 绘制直方图(df2):  
     x = df2.index  
     count = 0
-    y = df2['count']  
-    fig, ax2 = plt.subplots()  
+    y = df2['年级']  
+    fig, ax2 = plt.subplots() 
+__all__ = ['绘制直方图']
