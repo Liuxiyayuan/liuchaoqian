@@ -20,3 +20,16 @@ def 绘制直方图(df2):
     y = df2['年级']  
     fig, ax2 = plt.subplots() 
 __all__ = ['绘制直方图']
+
+
+def R(系数:int):
+    if 系数 >= 0.8:
+        return '极强相关'
+    elif 系数 >= 0.6:
+        return '强相关'
+    elif 系数 >= 0.4:
+        return '中等强度相关'
+    elif 系数 >= 0.2:
+         return '弱相关'
+    else:
+         return '极弱相关或无相关'
