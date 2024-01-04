@@ -1,3 +1,4 @@
+# 导入各种包
 import pandas as pd
 from pyreadstat import pyreadstat
 import matplotlib.pyplot as plt
@@ -59,6 +60,7 @@ def 读取SPSS数据(文件所在位置及名称):
 
 def 有序变量描述统计函数(表名, 变量名):
     """ 对有序类别变量进行描述统计 """
+    count = 0
     result = 表名[变量名].value_counts(sort=False)
     描述统计表 = pd.DataFrame(result)
     描述统计表['比例'] = 描述统计表['count'] / 描述统计表['count'].sum()
@@ -108,17 +110,28 @@ def goodmanKruska_tau_y(df, x: str, y: str) -> float:
 def 相关系数强弱判断(相关系数值):
     """ 相关系数强弱的判断 """
     if 相关系数值 >= 0.8:
-        return '父亲或母亲的职业与配偶职业的相关性呈现极强相关的特点'
+        return '月收入和生活满意度区间之间的关系呈现极强相关的特点'
     elif 相关系数值 >= 0.6:
-        return '父亲或母亲的职业与配偶职业的相关性呈现强相关的特点'
+        return '强相关'
     elif 相关系数值 >= 0.4:
-        return '父亲或母亲的职业与配偶职业的相关性呈现中等程度相关的特点'
+        return '中等程度相关'
     elif 相关系数值 >= 0.2:
-        return '父亲或母亲的职业与配偶职业的相关性呈现弱相关的特点'
+        return '弱相关'
     else:
-        return '父亲或母亲的职业与配偶职业的相关性呈现极弱相关或无相关的特点'
+        return '月收入和生活满意度区间之间的关系呈现极弱相关或无相关的特点，说明月收入的多少和生活满意度区间的关系不存在明显的关联性'
 
-
+def 相关系数强弱判断2(相关系数值):
+    """ 相关系数强弱的判断 """
+    if 相关系数值 >= 0.8:
+        return '月收入和生活满意度区间之间的关系呈现极强相关的特点'
+    elif 相关系数值 >= 0.6:
+        return '强相关'
+    elif 相关系数值 >= 0.4:
+        return '中等程度相关'
+    elif 相关系数值 >= 0.2:
+        return '弱相关'
+    else:
+        return '月收入和生活满意度区间之间的关系呈现极弱相关或无相关的特点，说明月收入的多少和生活满意度区间的关系不存在明显的关联性'
 def 制作交叉表(数据表, 自变量, 因变量):
     return pd.crosstab(数据表[自变量], 数据表[因变量], normalize='columns', margins=True)
 
@@ -209,7 +222,6 @@ def 两个无序类别变量的统计分析(数据表, 自变量, 因变量):
     tau_y = goodmanKruska_tau_y(数据表, 自变量, 因变量)
     # 制作交互分类表
     交互表 = pd.crosstab(数据表[F"{自变量}"], 数据表[F"{因变量}"])
-    交互表2= pd.crosstab(数据表[F"{自变量}"], 数据表[F"{因变量}"],margins=True, normalize=True)
     # 进行卡方检验
     chi2, p, dof, ex = stats.chi2_contingency(交互表)
 
@@ -230,7 +242,7 @@ def 两个有序类别变量的统计分析(数据表, 自变量, 因变量):
     p = result.pvalue
 
     print(F"Somers dy系数:{d_y: 0.4f}", 相关系数判断(d_y))
-    print(交互表2)
+    print(tabulate(交互表))
     print(F"p值：{p: .4f}")
     print(p值判断(p))
 
